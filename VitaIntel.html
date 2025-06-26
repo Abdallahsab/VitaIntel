@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitaintel - Breast Cancer Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0e1d, #1a0b2e, #0c0e1d);
+            color: #e0e0ff;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Gene Structure Animation */
+        .gene-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+        
+        .gene-strand {
+            position: absolute;
+            width: 180px;
+            animation: geneFloat 60s linear infinite;
+            transform-origin: center;
+            opacity: 0.7;
+        }
+        
+        .gene-backbone {
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background: rgba(180, 180, 200, 0.15);
+            border-radius: 3px;
+        }
+        
+        .gene-base {
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: #9e9ec8;
+            transform-origin: left;
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(158, 158, 200, 0.8);
+            animation: pulseBase 4s infinite ease-in-out;
+        }
+        
+        .gene-nucleotide {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(180, 200, 255, 0.8);
+            box-shadow: 0 0 12px rgba(180, 200, 255, 0.8);
+            animation: pulseNucleotide 4s infinite, floatNucleotide 8s infinite ease-in-out;
+        }
+        
+        /* Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(25, 25, 40, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(200, 200, 220, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .history-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(50, 50, 70, 0.8);
+            border: 1px solid rgba(200, 200, 220, 0.3);
+            color: #d0d0f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .history-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background: rgba(60, 60, 90, 0.8);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .auth-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(50, 50, 70, 0.8);
+            border: 1px solid rgba(200, 200, 220, 0.3);
+            color: #d0d0f0;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background: rgba(60, 60, 90, 0.8);
+        }
+        
+        /* Centered Chat Container */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            height: calc(100vh - 160px);
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Welcome Section */
+        .welcome-container {
+            text-align: center;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .welcome-container h1 {
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+            color: #e0e0f0;
+            background: linear-gradient(to right, #9e9ec8, #c0c0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .welcome-container h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #d0d0f0;
+            font-weight: 400;
+        }
+        
+        .welcome-container p {
+            font-size: 1.1rem;
+            color: #c0c0e0;
+            line-height: 1.6;
+        }
+        
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+        }
+        
+        /* Empty Chat */
+        .empty-chat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #a0a0d0;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .empty-chat i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #9e9ec8;
+            animation: pulse 2s infinite;
+        }
+        
+        .empty-chat p {
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        
+        .message {
+            padding: 10px 0;
+            position: relative;
+            animation: fadeIn 0.4s ease-out;
+            line-height: 1.7;
+            max-width: 90%;
+            align-self: flex-start;
+            background: rgba(30, 30, 50, 0.4);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(180, 180, 220, 0.2);
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            text-align: right;
+            background: rgba(40, 40, 70, 0.5);
+            border: 1px solid rgba(180, 180, 220, 0.3);
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #d0d0f0;
+        }
+        
+        .user-message .message-header {
+            justify-content: flex-end;
+        }
+        
+        .message-content {
+            font-size: 1.1rem;
+            color: #f0f0ff;
+            line-height: 1.6;
+        }
+        
+        .bot-message .message-content {
+            padding-left: 10px;
+            border-left: 2px solid #9e9ec8;
+        }
+        
+        .user-message .message-content {
+            padding-right: 10px;
+            border-right: 2px solid #9e9ec8;
+        }
+        
+        /* Centered Input Area */
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+        
+        .input-box {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: rgba(50, 50, 70, 0.8);
+            border-radius: 18px;
+            padding: 5px 20px;
+            border: 1px solid rgba(200, 200, 220, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+        }
+        
+        .input-box input {
+            flex: 1;
+            padding: 15px 0;
+            border: none;
+            background: transparent;
+            color: #f0f0f0;
+            font-size: 1.1rem;
+            outline: none;
+        }
+        
+        .input-box input::placeholder {
+            color: #a0a0d0;
+        }
+        
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: #a0a0d0;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: rgba(200, 200, 220, 0.1);
+            color: #d0d0f0;
+        }
+        
+        .send-btn {
+            background: linear-gradient(to right, #9e9ec8, #c0c0e0);
+            color: #1a1a2e;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(158, 158, 200, 0.5);
+        }
+        
+        /* Dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: rgba(50, 50, 70, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 10px;
+            border: 1px solid rgba(200, 200, 220, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            min-width: 200px;
+            margin-bottom: 10px;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .dropdown-content button {
+            width: 100%;
+            text-align: left;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background: rgba(70, 70, 90, 0.8);
+            border: none;
+            color: #d0d0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content button:hover {
+            background: rgba(80, 80, 110, 0.9);
+            color: #f0f0ff;
+        }
+        
+        .dropdown.active .dropdown-content {
+            display: flex;
+        }
+
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 30px;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            background: transparent;
+            backdrop-filter: none;
+            border-top: none;
+        }
+        
+        .footer-btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(to right, #9e9ec8, #c0c0e0);
+            border: none;
+            color: #0c0e1d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .footer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(158, 158, 200, 0.4);
+        }
+        
+        /* History Panel */
+        .history-panel {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            background: rgba(20, 20, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(200, 200, 220, 0.2);
+            z-index: 200;
+            padding: 20px;
+            overflow-y: auto;
+            transition: transform 0.4s ease;
+        }
+        
+        .history-panel.active {
+            transform: translateX(300px);
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(200, 200, 220, 0.2);
+        }
+        
+        .history-header h3 {
+            color: #e0e0ff;
+            font-size: 1.3rem;
+        }
+        
+        .clear-history {
+            background: transparent;
+            border: none;
+            color: #a0a0d0;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .clear-history:hover {
+            color: #ff6b6b;
+            transform: scale(1.1);
+        }
+        
+        .close-history {
+            background: transparent;
+            border: none;
+            color: #a0a0d0;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-history:hover {
+            color: #e0e0ff;
+            transform: scale(1.1);
+        }
+        
+        .history-item {
+            padding: 12px;
+            background: rgba(40, 40, 60, 0.5);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .history-item:hover {
+            background: rgba(50, 50, 80, 0.7);
+            border: 1px solid rgba(180, 180, 220, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .history-item.active {
+            background: rgba(60, 60, 100, 0.8);
+            border: 1px solid #9e9ec8;
+        }
+        
+        .history-date {
+            font-size: 0.8rem;
+            color: #9e9ec8;
+            margin-bottom: 5px;
+        }
+        
+        .history-preview {
+            font-size: 0.9rem;
+            color: #d0d0f0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .no-history {
+            color: #a0a0d0;
+            text-align: center;
+            padding: 20px 0;
+            font-style: italic;
+        }
+        
+        /* Sign In Page */
+        .signin-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .signin-page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .signin-container {
+            background: rgba(30, 30, 50, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-30px);
+            transition: transform 0.5s ease;
+        }
+        
+        .signin-page.active .signin-container {
+            transform: translateY(0);
+        }
+        
+        .signin-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .signin-header h2 {
+            color: #e0e0ff;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #9e9ec8, #c0c0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .signin-header p {
+            color: #a0a0d0;
+            font-size: 1.1rem;
+        }
+        
+        .signin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            color: #c0c0e0;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(180, 180, 220, 0.3);
+            background: rgba(40, 40, 60, 0.7);
+            color: #f0f0ff;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            border-color: #9e9ec8;
+            box-shadow: 0 0 0 3px rgba(158, 158, 200, 0.3);
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #a0a0d0;
+            cursor: pointer;
+        }
+        
+        .auth-submit {
+            padding: 15px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(to right, #9e9ec8, #c0c0e0);
+            color: #0c0e1d;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .auth-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(158, 158, 200, 0.4);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #a0a0d0;
+            font-size: 0.95rem;
+        }
+        
+        .form-footer a {
+            color: #c0c0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-footer a:hover {
+            color: #e0e0ff;
+            text-decoration: underline;
+        }
+        
+        .close-signin {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: transparent;
+            border: none;
+            color: #a0a0d0;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-signin:hover {
+            color: #e0e0ff;
+            transform: rotate(90deg);
+        }
+        
+        /* User Profile */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(50, 50, 70, 0.8);
+            padding: 8px 15px;
+            border-radius: 50px;
+            border: 1px solid rgba(200, 200, 220, 0.3);
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #9e9ec8, #c0c0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0c0e1d;
+            font-weight: bold;
+        }
+        
+        .user-name {
+            color: #d0d0f0;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: #a0a0d0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            color: #e0e0ff;
+        }
+        
+        /* Error Message */
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            text-align: center;
+            min-height: 20px;
+        }
+        
+        /* Google Sign-in Button */
+        .google-signin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #757575;
+            border-radius: 4px;
+            padding: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #dcdcdc;
+            margin-top: 15px;
+        }
+        
+        .google-signin:hover {
+            background: #f8f8f8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .google-icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+        }
+        
+        /* Animations */
+        @keyframes geneFloat {
+            0% {
+                transform: translateY(100vh) translateX(calc(-1 * var(--offset-x, 0px))) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+                transform: translateY(90vh) translateX(calc(var(--offset-x, 0px) * 0.5)) rotate(36deg);
+            }
+            30% {
+                transform: translateY(70vh) translateX(calc(var(--offset-x, 0px) * -0.8)) rotate(108deg);
+            }
+            50% {
+                transform: translateY(50vh) translateX(calc(var(--offset-x, 0px) * 1.2)) rotate(180deg);
+            }
+            70% {
+                transform: translateY(30vh) translateX(calc(var(--offset-x, 0px) * -1.5)) rotate(252deg);
+            }
+            90% {
+                opacity: 0.7;
+                transform: translateY(10vh) translateX(calc(var(--offset-x, 0px) * 0.8)) rotate(324deg);
+            }
+            100% {
+                transform: translateY(-100vh) translateX(calc(-1 * var(--offset-x, 0px))) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulseBase {
+            0% { transform: rotate(var(--base-angle)) scale(1); opacity: 0.8; }
+            50% { transform: rotate(calc(var(--base-angle) + 5deg)) scale(1.05); opacity: 1; }
+            100% { transform: rotate(var(--base-angle)) scale(1); opacity: 0.8; }
+        }
+        
+        @keyframes pulseNucleotide {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+        
+        @keyframes floatNucleotide {
+            0% { 
+                transform: translate(0, 0);
+            }
+            25% { 
+                transform: translate(calc(5px * var(--float-factor)), calc(-5px * var(--float-factor)));
+            }
+            50% { 
+                transform: translate(0, calc(-10px * var(--float-factor)));
+            }
+            75% { 
+                transform: translate(calc(-5px * var(--float-factor)), calc(-5px * var(--float-factor)));
+            }
+            100% { 
+                transform: translate(0, 0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 15px;
+            }
+            
+            .history-btn span {
+                display: none;
+            }
+            
+            .auth-btn {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .welcome-container {
+                padding: 20px;
+                margin: 20px auto;
+            }
+            
+            .welcome-container h1 {
+                font-size: 1.8rem;
+            }
+            
+            .welcome-container h3 {
+                font-size: 1.2rem;
+            }
+            
+            .message {
+                max-width: 95%;
+            }
+            
+            .dropdown-content {
+                min-width: 180px;
+            }
+            
+            .input-box {
+                padding: 5px 15px;
+            }
+            
+            .bot-message .message-content,
+            .user-message .message-content {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            
+            .footer-btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+            
+            .footer {
+                padding: 12px 15px;
+            }
+            
+            .signin-container {
+                padding: 25px;
+            }
+            
+            .signin-header h2 {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- History Panel -->
+    <div class="history-panel" id="historyPanel">
+        <div class="history-header">
+            <h3>Chat History</h3>
+            <div>
+                <button class="clear-history" id="clearHistory" title="Clear all history">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <button class="close-history" id="closeHistory">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="history-list" id="historyList">
+            <div class="no-history" id="noHistory">No chat history yet. Start a conversation!</div>
+        </div>
+    </div>
+    
+    <!-- Sign In Page -->
+    <div class="signin-page" id="signinPage">
+        <button class="close-signin" id="closeSignin">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="signin-container">
+            <div class="signin-header">
+                <h2>Sign In to Vitaintel</h2>
+                <p>Access your personalized breast cancer assistant</p>
+            </div>
+            <form class="signin-form" id="signinForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="your.email@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-container">
+                        <input type="password" id="password" required placeholder="Enter your password">
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="signinError" class="error-message"></div>
+                <button type="submit" class="auth-submit">Sign In</button>
+                
+                <div class="google-signin" id="googleSignin">
+                    <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
+                        <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                        <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                        <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                        <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                    </svg>
+                    Sign in with Google
+                </div>
+                
+                <div class="form-footer">
+                    Don't have an account? <a href="#" id="showSignup">Sign Up</a><br>
+                    <a href="#" id="forgotPassword">Forgot your password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Gene Structure Animation -->
+    <div class="gene-animation" id="geneAnimation"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="history-btn" id="historyButton">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </button>
+        </div>
+        <div class="auth-buttons" id="authButtons">
+            <button class="auth-btn signin-btn" id="signinButton">Sign In</button>
+            <button class="auth-btn signup-btn" id="signupButton">Sign Up</button>
+        </div>
+        <div class="user-profile" id="userProfile" style="display: none;">
+            <div class="user-avatar" id="userAvatar">U</div>
+            <div class="user-name" id="userName">User</div>
+            <button class="logout-btn" id="logoutButton">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Chat Container -->
+    <div class="chat-container">
+        <!-- Welcome Section -->
+        <div class="welcome-container">
+            <h1>Vitaintel Feel Free To Help</h1>
+            <h3>Free Your Mind What Can I Help About Your Cancer</h3>
+        </div>
+        
+        <!-- Empty Chat Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="empty-chat">
+                <i class="fas fa-comments"></i>
+                <p>Start a conversation with Vitaintel<br>or use the tools below to analyze medical images.</p>
+            </div>
+        </div>
+        
+        <!-- Centered Input Area with New Tools -->
+        <div class="input-container">
+            <div class="input-box">
+                <!-- Attach button with dropdown -->
+                <div class="dropdown" id="attachDropdown">
+                    <button class="action-btn" title="Attach file" id="attachButton">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="insertImageBtn">
+                            <i class="fas fa-image"></i>
+                            Insert Image
+                        </button>
+                        <button id="xrayBtn">
+                            <i class="fas fa-x-ray"></i>
+                            X-Ray Analyst
+                        </button>
+                    </div>
+                </div>
+                
+                <input type="text" id="userInput" placeholder="Ask Vitaintel about breast cancer...">
+                
+                <button class="action-btn" title="Voice input">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                
+                <button class="action-btn send-btn" id="sendButton" title="Send medical inquiry">
+                    <i class="fas fa-comment-medical"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer with New Chat Button -->
+    <div class="footer">
+        <button class="footer-btn" id="newChatBtn">
+            <i class="fas fa-plus"></i>
+            Start New Chat
+        </button>
+    </div>
+
+    <script>
+        // Create enhanced gene structure animation
+        function createGeneAnimation() {
+            const container = document.getElementById('geneAnimation');
+            
+            // Create gene strands
+            for (let i = 0; i < 8; i++) {
+                const strand = document.createElement('div');
+                strand.className = 'gene-strand';
+                
+                // Random position
+                const leftPosition = Math.random() * 100;
+                strand.style.left = `${leftPosition}%`;
+                
+                // Animation delay
+                strand.style.animationDelay = `${Math.random() * 30}s`;
+                
+                // Random horizontal movement factor
+                const offsetX = 20 + Math.random() * 80;
+                strand.style.setProperty('--offset-x', `${offsetX}px`);
+                
+                // Create backbones
+                const backboneLeft = document.createElement('div');
+                backboneLeft.className = 'gene-backbone left';
+                strand.appendChild(backboneLeft);
+                
+                const backboneRight = document.createElement('div');
+                backboneRight.className = 'gene-backbone right';
+                strand.appendChild(backboneRight);
+                
+                // Create base pairs
+                const numBases = 20;
+                for (let j = 0; j < numBases; j++) {
+                    const base = document.createElement('div');
+                    base.className = 'gene-base';
+                    
+                    // Position along the strand
+                    const position = j * (100 / (numBases - 1));
+                    base.style.top = `${position}%`;
+                    
+                    // Alternating angles for helix effect
+                    const angle = j % 2 === 0 ? 45 : -45;
+                    base.style.setProperty('--base-angle', `${angle}deg`);
+                    base.style.transform = `rotate(${angle}deg)`;
+                    
+                    // Base pair colors
+                    const baseColors = ['#9e9ec8', '#c0c0e0', '#a0a0d0', '#b0b0e0'];
+                    const baseType = baseColors[Math.floor(Math.random() * baseColors.length)];
+                    base.style.background = baseType;
+                    
+                    // Add animation to make it pulse
+                    base.style.animation = `pulseBase ${2 + Math.random() * 2}s infinite ease-in-out`;
+                    base.style.animationDelay = `${Math.random() * 2}s`;
+                    
+                    strand.appendChild(base);
+                    
+                    // Create nucleotides (floating dots)
+                    if (Math.random() > 0.6) {
+                        const nucleotide = document.createElement('div');
+                        nucleotide.className = 'gene-nucleotide';
+                        
+                        // Position near the base
+                        const posX = 40 + Math.random() * 40;
+                        const posY = position + Math.random() * 5;
+                        nucleotide.style.left = `${posX}px`;
+                        nucleotide.style.top = `${posY}%`;
+                        
+                        // Random size and animation delay
+                        const size = 8 + Math.random() * 12;
+                        nucleotide.style.width = `${size}px`;
+                        nucleotide.style.height = `${size}px`;
+                        nucleotide.style.animationDelay = `${Math.random() * 3}s`;
+                        
+                        // Floating factor for realistic movement
+                        const floatFactor = 0.5 + Math.random();
+                        nucleotide.style.setProperty('--float-factor', floatFactor);
+                        
+                        strand.appendChild(nucleotide);
+                    }
+                }
+                
+                container.appendChild(strand);
+            }
+        }
+        
+        // Chat management
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const historyList = document.getElementById('historyList');
+        const noHistory = document.getElementById('noHistory');
+        
+        // Buttons
+        const newChatBtn = document.getElementById('newChatBtn');
+        const attachButton = document.getElementById('attachButton');
+        const attachDropdown = document.getElementById('attachDropdown');
+        const historyButton = document.getElementById('historyButton');
+        const historyPanel = document.getElementById('historyPanel');
+        const closeHistory = document.getElementById('closeHistory');
+        const clearHistory = document.getElementById('clearHistory');
+        
+        // Auth elements
+        const signinPage = document.getElementById('signinPage');
+        const signinButton = document.getElementById('signinButton');
+        const signupButton = document.getElementById('signupButton');
+        const closeSignin = document.getElementById('closeSignin');
+        const signinForm = document.getElementById('signinForm');
+        const togglePassword = document.getElementById('togglePassword');
+        const authButtons = document.getElementById('authButtons');
+        const userProfile = document.getElementById('userProfile');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const logoutButton = document.getElementById('logoutButton');
+        const signinError = document.getElementById('signinError');
+        const forgotPassword = document.getElementById('forgotPassword');
+        const googleSignin = document.getElementById('googleSignin');
+        
+        // Chat history data
+        let chatHistory = [];
+        let currentChat = null;
+        let currentUser = null;
+        
+        // AI responses
+        const botResponses = [
+            "Early detection through regular mammograms can significantly improve breast cancer survival rates. The 5-year survival rate for localized breast cancer is 99%.",
+            "Common treatments include surgery (lumpectomy or mastectomy), radiation therapy, chemotherapy, hormone therapy, and targeted therapies.",
+            "Managing side effects is an important part of treatment. For nausea, try ginger tea or anti-nausea medications. For fatigue, light exercise and proper rest can help.",
+            "Emotional support is crucial. Consider joining a support group or speaking with a counselor. Many patients find mindfulness and meditation helpful.",
+            "Nutrition plays a vital role during treatment. Focus on protein-rich foods, fruits, vegetables, and whole grains. Stay well-hydrated.",
+            "After treatment, follow-up care is essential. This typically includes regular check-ups, mammograms, and other tests to monitor your recovery.",
+            "Many patients experience 'chemo brain' - cognitive changes during treatment. This usually improves after treatment ends. Using planners and reminders can help.",
+            "Remember that every breast cancer journey is unique. Your treatment plan is tailored specifically to your cancer type, stage, and personal health factors."
+        ];
+        
+        // Initialize page
+        function initPage() {
+            createGeneAnimation();
+            initChatHistory();
+            checkLoginStatus();
+            
+            // Add event listeners
+            signinButton.addEventListener('click', showSigninPage);
+            signupButton.addEventListener('click', showSigninPage);
+            closeSignin.addEventListener('click', hideSigninPage);
+            signinForm.addEventListener('submit', handleSignIn);
+            togglePassword.addEventListener('click', togglePasswordVisibility);
+            logoutButton.addEventListener('click', handleLogout);
+            forgotPassword.addEventListener('click', handleForgotPassword);
+            googleSignin.addEventListener('click', handleGoogleSignIn);
+            clearHistory.addEventListener('click', handleClearHistory);
+        }
+        
+        // Handle clear history
+        function handleClearHistory() {
+            if (confirm('Are you sure you want to clear all chat history? This cannot be undone.')) {
+                chatHistory = [];
+                localStorage.removeItem('breastCancerChatHistory');
+                currentChat = null;
+                startNewChat();
+                renderHistory();
+                showSuccess('Chat history cleared');
+            }
+        }
+        
+        // Show sign-in page
+        function showSigninPage() {
+            // Clear previous error messages
+            signinError.textContent = '';
+            // Reset form
+            signinForm.reset();
+            signinPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Hide sign-in page
+        function hideSigninPage() {
+            signinPage.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Toggle password visibility
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const icon = togglePassword.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        // Check login status
+        function checkLoginStatus() {
+            const savedUser = localStorage.getItem('vitaintelUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateUserUI();
+            }
+        }
+        
+        // Update user UI
+        function updateUserUI() {
+            if (currentUser) {
+                authButtons.style.display = 'none';
+                userProfile.style.display = 'flex';
+                userAvatar.textContent = currentUser.name.charAt(0);
+                userName.textContent = currentUser.name.split(' ')[0];
+            } else {
+                authButtons.style.display = 'flex';
+                userProfile.style.display = 'none';
+            }
+        }
+        
+        // Validate Google email
+        function isValidGoogleEmail(email) {
+            // Simple regex to validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            // Check if email has a valid format
+            if (!emailRegex.test(email)) {
+                return false;
+            }
+            
+            // For simulation, consider all valid emails as Google accounts
+            // In a real app, this would be replaced with actual Google authentication
+            return true;
+        }
+        
+        // Handle sign in
+        function handleSignIn(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Clear previous error
+            signinError.textContent = '';
+            
+            // Simple validation
+            if (!email || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            // Check if it's a valid Google email
+            if (!isValidGoogleEmail(email)) {
+                showError('Please enter a valid Google email address');
+                return;
+            }
+            
+            // For this simulation, we'll consider any password as valid
+            // In a real application, this would verify with Google's servers
+            const name = email.split('@')[0];
+            const user = {
+                id: Date.now(),
+                name: name.charAt(0).toUpperCase() + name.slice(1),
+                email: email,
+                joined: new Date().toISOString()
+            };
+            
+            currentUser = user;
+            localStorage.setItem('vitaintelUser', JSON.stringify(user));
+            updateUserUI();
+            hideSigninPage();
+            showSuccess(`Welcome, ${user.name}!`);
+        }
+        
+        // Handle Google sign-in
+        function handleGoogleSignIn() {
+            // Simulate Google sign-in flow
+            showSuccess('Redirecting to Google for authentication...');
+            
+            // For simulation, use a test Google account
+            setTimeout(() => {
+                const email = 'testuser@gmail.com';
+                const name = 'Google User';
+                const user = {
+                    id: Date.now(),
+                    name: name,
+                    email: email,
+                    joined: new Date().toISOString()
+                };
+                
+                currentUser = user;
+                localStorage.setItem('vitaintelUser', JSON.stringify(user));
+                updateUserUI();
+                hideSigninPage();
+                showSuccess(`Welcome, ${user.name}!`);
+            }, 1500);
+        }
+        
+        // Show error message
+        function showError(message) {
+            signinError.textContent = message;
+            signinError.style.color = '#ff6b6b';
+            signinError.style.fontWeight = '500';
+            signinForm.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                signinForm.style.animation = '';
+            }, 500);
+        }
+        
+        // Show success message
+        function showSuccess(message) {
+            const successMsg = document.createElement('div');
+            successMsg.textContent = message;
+            successMsg.style.position = 'fixed';
+            successMsg.style.bottom = '20px';
+            successMsg.style.right = '20px';
+            successMsg.style.padding = '15px 25px';
+            successMsg.style.backgroundColor = '#4CAF50';
+            successMsg.style.color = 'white';
+            successMsg.style.borderRadius = '8px';
+            successMsg.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            successMsg.style.zIndex = '1000';
+            successMsg.style.opacity = '0';
+            successMsg.style.transform = 'translateY(20px)';
+            successMsg.style.transition = 'all 0.3s ease';
+            
+            document.body.appendChild(successMsg);
+            
+            // Animate in
+            setTimeout(() => {
+                successMsg.style.opacity = '1';
+                successMsg.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Remove after delay
+            setTimeout(() => {
+                successMsg.style.opacity = '0';
+                successMsg.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    document.body.removeChild(successMsg);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Handle forgot password
+        function handleForgotPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            if (!email) {
+                showError('Please enter your email to reset password');
+                return;
+            }
+            
+            if (!isValidGoogleEmail(email)) {
+                showError('Please enter a valid Google email address');
+                return;
+            }
+            
+            showSuccess(`Password reset instructions sent to ${email}`);
+        }
+        
+        // Handle logout
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('vitaintelUser');
+            updateUserUI();
+            showSuccess('You have been signed out');
+        }
+        
+        // Initialize chat history
+        function initChatHistory() {
+            // Try to load from localStorage
+            const savedHistory = localStorage.getItem('breastCancerChatHistory');
+            if (savedHistory) {
+                chatHistory = JSON.parse(savedHistory);
+            }
+            
+            // Render history
+            renderHistory();
+        }
+        
+        // Save chat to history
+        function saveToHistory(userMessage, botResponse) {
+            const timestamp = Date.now();
+            const date = new Date(timestamp);
+            const formattedDate = date.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // Create new chat if none exists
+            if (!currentChat) {
+                currentChat = {
+                    id: timestamp,
+                    date: formattedDate,
+                    preview: userMessage.substring(0, 40) + (userMessage.length > 40 ? "..." : ""),
+                    messages: [
+                        { sender: 'user', content: userMessage, timestamp },
+                        { sender: 'vitaintel', content: botResponse, timestamp: timestamp + 1000 }
+                    ]
+                };
+                
+                chatHistory.unshift(currentChat);
+            } else {
+                // Add to existing chat
+                currentChat.messages.push(
+                    { sender: 'user', content: userMessage, timestamp },
+                    { sender: 'vitaintel', content: botResponse, timestamp: timestamp + 1000 }
+                );
+                
+                currentChat.preview = userMessage.substring(0, 40) + (userMessage.length > 40 ? "..." : "");
+                currentChat.date = formattedDate;
+                
+                // Move to top of history
+                const index = chatHistory.findIndex(chat => chat.id === currentChat.id);
+                if (index > 0) {
+                    chatHistory.splice(index, 1);
+                    chatHistory.unshift(currentChat);
+                }
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('breastCancerChatHistory', JSON.stringify(chatHistory));
+            
+            // Update history UI
+            renderHistory();
+        }
+        
+        // Render chat history
+        function renderHistory() {
+            historyList.innerHTML = '';
+            
+            if (chatHistory.length === 0) {
+                noHistory.style.display = 'block';
+                historyList.appendChild(noHistory);
+                return;
+            }
+            
+            noHistory.style.display = 'none';
+            
+            chatHistory.forEach(chat => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                if (currentChat && chat.id === currentChat.id) {
+                    item.classList.add('active');
+                }
+                
+                item.innerHTML = `
+                    <div class="history-date">${chat.date}</div>
+                    <div class="history-preview">${chat.preview}</div>
+                `;
+                
+                item.addEventListener('click', () => {
+                    loadChat(chat);
+                });
+                
+                historyList.appendChild(item);
+            });
+        }
+        
+        // Load a chat from history
+        function loadChat(chat) {
+            // Set as current chat
+            currentChat = chat;
+            
+            // Clear chat messages
+            chatMessages.innerHTML = '';
+            
+            // Add all messages to chat
+            chat.messages.forEach(msg => {
+                addMessage(msg.content, msg.sender);
+            });
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Update history UI
+            renderHistory();
+        }
+        
+        // Start new chat
+        function startNewChat() {
+            currentChat = null;
+            chatMessages.innerHTML = `
+                <div class="empty-chat">
+                    <i class="fas fa-comments"></i>
+                    <p>New conversation started. Ask your question below.</p>
+                </div>
+            `;
+            
+            // Update history UI
+            renderHistory();
+        }
+        
+        // Send message function
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+            
+            // Check if user is logged in
+            if (!currentUser) {
+                showSigninPage();
+                showError('Please sign in to chat with Vitaintel');
+                return;
+            }
+            
+            // Remove empty state if it exists
+            const emptyChat = document.querySelector('.empty-chat');
+            if (emptyChat) {
+                emptyChat.remove();
+            }
+            
+            // Add user message
+            addMessage(message, 'user');
+            userInput.value = '';
+            
+            // Generate Vitaintel response
+            setTimeout(() => {
+                // Find a relevant response or use a random one
+                let response;
+                
+                if (message.toLowerCase().includes('symptom')) {
+                    response = "Common breast cancer symptoms include a new lump in the breast or underarm, thickening or swelling of part of the breast, irritation or dimpling of breast skin, redness or flaky skin in the nipple area, pulling in of the nipple, nipple discharge, and any change in the size or shape of the breast.";
+                } else if (message.toLowerCase().includes('treatment')) {
+                    response = "Treatment options depend on the type and stage of breast cancer. Common treatments include surgery (lumpectomy or mastectomy), radiation therapy, chemotherapy, hormone therapy, and targeted therapies. Your healthcare team will recommend a personalized treatment plan based on your specific situation.";
+                } else if (message.toLowerCase().includes('prevent') || message.toLowerCase().includes('risk')) {
+                    response = "While you can't prevent breast cancer entirely, you can reduce your risk by maintaining a healthy weight, exercising regularly, limiting alcohol consumption, avoiding smoking, breastfeeding if possible, and being cautious about hormone therapy. Regular screening is also crucial for early detection.";
+                } else {
+                    // Random response for other questions
+                    response = botResponses[Math.floor(Math.random() * botResponses.length)];
+                }
+                
+                // Add Vitaintel message
+                addMessage(response, 'vitaintel');
+                
+                // Save to history
+                saveToHistory(message, response);
+            }, 1000);
+        }
+        
+        // Add new message to chat
+        function addMessage(content, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            
+            const messageHeader = document.createElement('div');
+            messageHeader.classList.add('message-header');
+            
+            if (sender === 'user') {
+                messageHeader.innerHTML = '<i class="fas fa-user"></i><span>You</span>';
+            } else {
+                messageHeader.innerHTML = '<span>Vitaintel</span>';
+            }
+            
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message-content');
+            messageContent.textContent = content;
+            
+            messageDiv.appendChild(messageHeader);
+            messageDiv.appendChild(messageContent);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to latest message
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Toggle dropdown visibility
+        function toggleDropdown() {
+            attachDropdown.classList.toggle('active');
+        }
+        
+        // Toggle history panel
+        function toggleHistory() {
+            historyPanel.classList.toggle('active');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!attachDropdown.contains(event.target) && attachDropdown.classList.contains('active')) {
+                attachDropdown.classList.remove('active');
+            }
+        });
+        
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        
+        // Button functionality
+        newChatBtn.addEventListener('click', startNewChat);
+        attachButton.addEventListener('click', toggleDropdown);
+        historyButton.addEventListener('click', toggleHistory);
+        closeHistory.addEventListener('click', toggleHistory);
+        
+        // Tool buttons functionality
+        document.getElementById('insertImageBtn').addEventListener('click', function() {
+            attachDropdown.classList.remove('active');
+            alert('Image upload interface would appear here.');
+        });
+        
+        document.getElementById('xrayBtn').addEventListener('click', function() {
+            attachDropdown.classList.remove('active');
+            showXRayAnalyst();
+        });
+        
+        // Initialize page
+        window.onload = initPage;
+    </script>
+</body>
+</html>
