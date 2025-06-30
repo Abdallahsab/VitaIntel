@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VitaIntel combines AI and genomic science to pioneer precision healthcare and cancer care solutions.">
+    <meta name="keywords" content="AI in healthcare, biomedicine, cancer detection, genomics, VitaIntel">
+    <meta property="og:title" content="VitaIntel | AI-Driven Biomedical Breakthroughs">
+    <meta property="og:description" content="Discover how VitaIntel uses AI to transform cancer care and precision medicine.">
+    <meta property="og:image" content="https://vitaintel.com/assets/og-image.jpg">
+    <meta name="robots" content="index, follow">
+    <title>VitaIntel | AI-Driven Biomedical Breakthroughs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #70c8ff;
+            --primary-dark: #4ab4ff;
+            --secondary: #0066cc;
+            --dark: #333333;
+            --light: #ffffff;
+            --accent-blue: #0066cc;
+            --accent-purple: #4c79af;
+            --font-main: 'Poppins', sans-serif;
+            --bg-main: var(--light);
+            --bg-section: linear-gradient(to bottom, #f5f5f5, #ffffff);
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-color: var(--dark);
+            --border-color: rgba(112, 200, 255, 0.3);
+            --glow-shadow: 0 0 15px rgba(112, 200, 255, 0.3);
+            --error-color: #ff4d4d;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font-main);
+            color: var(--text-color);
+            background-color: var(--bg-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .glow-text {
+            text-shadow: 0 0 8px rgba(112, 200, 255, 0.3);
+        }
+        .glow-box {
+            box-shadow: var(--glow-shadow);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: transparent;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        header.scrolled {
+            background: var(--bg-section);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4ab4ff ;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+            color: var(--primary-dark);
+        }
+        .logo img {
+            margin-right: 5px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        nav ul li a:hover::after, nav ul li a.active::after {
+            width: 100%;
+        }
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .hamburger:hover {
+            transform: rotate(90deg);
+        }
+        section {
+            padding: 120px 0;
+            background: var(--bg-section);
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        /* Enhanced Particle Animations */
+        .particle {
+            position: absolute;
+            width: 12px; /* Increased size */
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 50%;
+            opacity: 0.6;
+            filter: drop-shadow(0 0 5px rgba(0, 102, 204, 0.5));
+            z-index: 0;
+            animation: particleFloat 15s linear infinite;
+        }
+        @keyframes particleFloat {
+            0% { 
+                transform: translateY(0) translateX(0); 
+                opacity: 0.6; 
+            }
+            50% { 
+                opacity: 0.8; 
+            }
+            100% { 
+                transform: translateY(-200vh) translateX(60px); /* Taller animation */
+                opacity: 0; 
+            }
+        }
+        
+        /* Enhanced Star Animations */
+        .stars {
+            position: absolute;
+            width: 4px; /* Larger stars */
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 50%;
+            filter: drop-shadow(0 0 3px rgba(0, 102, 204, 0.7));
+            z-index: 0;
+            animation: animStar 80s linear infinite;
+        }
+        @keyframes animStar {
+            from { 
+                transform: translateY(0); 
+            }
+            to { 
+                transform: translateY(-200vh); /* Taller animation */
+            }
+        }
+        
+        #contact {
+            background: var(--bg-main);
+        }
+        .section-title {
+            font-size: 3rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .section-subtitle {
+            font-size: 1.3rem;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.2s;
+        }
+        #home {
+            min-height: 120vh;
+            background: var(--bg-section);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease;
+        }
+        .hero-subtitle {
+            font-size: 1.6rem;
+            margin-bottom: 2.5rem;
+            max-width: 650px;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 1s ease 0.3s;
+        }
+        .typed-cursor {
+            font-size: 1.6rem;
+            color: var(--secondary);
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cta-button {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--light);
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease 0.5s;
+        }
+        .cta-button:hover {
+            transform: scale(1.08);
+            box-shadow: var(--glow-shadow);
+        }
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            padding: 14px 40px;
+            color: var(--secondary);
+        }
+        .cta-button.secondary:hover {
+            background: var(--secondary);
+            color: var(--light);
+        }
+        .dna-container {
+            position: absolute;
+            right: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 500px;
+            z-index: 1;
+            opacity: 0.7;
+            animation: fadeIn 2s ease 1s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .dna-strand {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .dna-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 50%;
+            filter: drop-shadow(0 0 5px rgba(0, 102, 204, 0.5));
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .page-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1001;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.1s ease;
+        }
+        .services-grid, .portfolio-grid, .blog-grid, .team-grid, .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .service-card, .portfolio-card, .blog-card, .team-card, .testimonial-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card:hover, .portfolio-card:hover, .blog-card:hover, .team-card:hover, .testimonial-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: var(--light);
+            border-color: var(--secondary);
+            box-shadow: 0 10px 20px rgba(0, 102, 204, 0.1);
+        }
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 102, 204, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .portfolio-card:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        .view-project {
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            transition: all 0.3s ease;
+        }
+        .service-card:hover .service-icon, 
+        .portfolio-card:hover i, 
+        .blog-card:hover i, 
+        .team-card:hover i, 
+        .testimonial-card:hover i {
+            transform: scale(1.2) rotate(5deg);
+            color: var(--primary-dark);
+        }
+        .service-card h3, 
+        .portfolio-card h3, 
+        .blog-card h3, 
+        .team-card h3, 
+        .testimonial-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .service-card h3 i, 
+        .portfolio-card h3 i, 
+        .blog-card h3 i, 
+        .team-card h3 i, 
+        .testimonial-card h3 i {
+            color: var(--accent-purple);
+        }
+        .team-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .team-card:hover img {
+            border-color: var(--secondary);
+            transform: scale(1.05);
+        }
+        .team-card .social-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .portfolio-filter {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .filter-btn {
+            background: var(--bg-card);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--secondary);
+            color: var(--light);
+            transform: translateY(-2px);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1002;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInModal 0.3s ease;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: modalFadeIn 0.5s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .modal-close:hover {
+            color: var(--secondary);
+            transform: rotate(90deg);
+        }
+        .about-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            max-width: 2000px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .about-image {
+            width: 350px;
+            height: 350px;
+            border-radius: 70%;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.8s ease 0.2s;
+        }
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .about-image:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 102, 204, 0.2);
+        }
+        .about-image:hover img {
+            transform: scale(1.1);
+        }
+        .about-text {
+            flex: 1;
+            text-align: left;
+            min-width: 200px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.8s ease 0.3s;
+        }
+        .about-text p {
+            margin-bottom: 30px;
+            font-size: 1.4rem;
+        }
+        .timeline {
+            margin-top: 40px;
+            position: relative;
+            padding-left: 40px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--secondary);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.8s ease;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 10px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+        }
+        .timeline-item h4 {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        .specialization {
+            color: var(--accent-purple);
+            background: rgba(76, 121, 175, 0.1);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .contact-container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .contact-info, .contact-form {
+            max-width: 600px;
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s ease;
+        }
+        .contact-info h3, .contact-form h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .contact-info p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .contact-info a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .contact-info a:hover {
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+        .contact-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--light);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            transition: all 0.3s ease;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+        }
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .contact-form button {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--light);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .contact-form button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+        }
+        .form-error {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            display: none;
+            margin-bottom: 10px;
+    
+        }
+
+        .highlight-number {
+            color: var(--accent-purple);
+            font-weight: 600;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .highlight-number:hover {
+            color: var(--secondary);
+        }
+        .highlight-number::after {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            font-size: 0.7rem;
+            color: var(--accent-purple);
+        }
+
+        
+        footer {
+            background: var(--bg-section);
+            padding: 50px 0;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            text-align: left;
+            padding: 20px;
+            border-radius: 10px;
+            background: var(--bg-card);
+            transition: all 0.3s ease;
+        }
+        .footer-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        .footer-section p, .footer-section ul {
+            font-size: 0.9rem;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .footer-section ul li a:hover {
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover {
+            color: var(--secondary);
+            transform: scale(1.3);
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--secondary);
+            color: var(--light);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+        }
+        .animate-in {
+            opacity: 1;
+            transform: translateY(0) translateX(0) scale(1);
+        }
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            .section-title {
+                font-size: 2.5rem;
+            }
+            .about-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .about-image {
+                margin-bottom: 20px;
+            }
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-section {
+                text-align: center;
+                min-width: 100%;
+                margin-bottom: 20px;
+            }
+            .hamburger {
+                display: block;
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--bg-section);
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+            nav ul.active {
+                display: flex;
+            }
+            .dna-container {
+                display: none;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .cta-button {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="C:\Users\asus\Downloads\Untitled.svg" alt="VitaIntel Logo" width="70" height="auto">
+                    VitaIntel
+                </div>
+                <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+                <ul id="navMenu">
+                    <li><a href="#home" class="active scroll-link">Home</a></li>
+                    <li><a href="#services" class="scroll-link">Services</a></li>
+                    <li><a href="#portfolio" class="scroll-link">Portfolio</a></li>
+                    <li><a href="#blog" class="scroll-link">Blog</a></li>
+                    <li><a href="#about" class="scroll-link">About</a></li>
+                
+                    <li><a href="#team" class="scroll-link">Team</a></li>
+                    <li><a href="#contact" class="scroll-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="page-progress">
+        <div class="progress-bar"></div>
+    </div>
+    <section id="home">
+        <!-- Enhanced background particles -->
+        <div class="particle" style="left: 15%; top: 20%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 55%; top: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 25%; top: 60%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 75%; top: 40%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 10%; top: 80%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 85%; top: 20%; animation-delay: 1s;"></div>
+        
+        <!-- Enhanced stars -->
+        <div class="stars" style="left: 10%; top: 10%; animation-delay: 0s;"></div>
+        <div class="stars" style="left: 20%; top: 30%; animation-delay: 2s;"></div>
+        <div class="stars" style="left: 30%; top: 50%; animation-delay: 4s;"></div>
+        <div class="stars" style="left: 40%; top: 70%; animation-delay: 6s;"></div>
+        <div class="stars" style="left: 50%; top: 90%; animation-delay: 8s;"></div>
+        <div class="stars" style="left: 60%; top: 20%; animation-delay: 10s;"></div>
+        <div class="stars" style="left: 70%; top: 40%; animation-delay: 12s;"></div>
+        <div class="stars" style="left: 80%; top: 60%; animation-delay: 14s;"></div>
+        <div class="stars" style="left: 90%; top: 80%; animation-delay: 16s;"></div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title glow-text">Reimagining Medicine with AI</h1>
+                <p class="hero-subtitle" id="typedSubtitle"></p>
+                <a href="#services" class="cta-button scroll-link">Explore Our Research</a>
+                <div class="dna-container">
+                    <div class="dna-strand" id="dna"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="services">
+        <div class="particle" style="left: 20%; top: 10%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 70%; top: 30%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 40%; top: 60%; animation-delay: 3s;"></div>
+        <div class="container">
+            <h2 class="section-title glow-text"><i class="fas fa-cogs" aria-label="Services Icon"></i> Our Solutions</h2>
+            <p class="section-subtitle">Discover our innovative AI-driven biomedical solutions.</p>
+            <div class="services-grid">
+                <div class="service-card" data-modal="genomic-ai" style="transition-delay: 0s;">
+                    <div class="service-icon"><i class="fas fa-dna" aria-label="Genomics Icon"></i></div>
+                    <h3>Genomic AI</h3>
+                    <p>Deep learning algorithms that analyze genetic data to predict disease risks and optimize treatments.</p>
+                </div>
+                <div class="service-card" data-modal="diagnostic-imaging" style="transition-delay: 0.1s;">
+                    <div class="service-icon"><i class="fas fa-image" aria-label="Imaging Icon"></i></div>
+                    <h3>Diagnostic Imaging</h3>
+                    <p>Computer vision systems that detect anomalies in medical scans with 99.2% accuracy.</p>
+                </div>
+                <div class="service-card" data-modal="computational-biology" style="transition-delay: 0.2s;">
+                    <div class="service-icon"><i class="fas fa-microscope" aria-label="Biology Icon"></i></div>
+                    <h3>Computational Biology</h3>
+                    <p>AI-driven analysis of biological data to personalize insights for cancer research and treatments.</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="genomic-ai">
+            <div class="modal-content">
+                <span class="modal-close">×</span>
+                <h3>Genomic AI</h3>
+                <p>Our Genomic AI leverages deep learning to analyze complex genetic datasets, enabling precise disease risk predictions and tailored treatment plans.</p> <br>
+                <a href="Services/genomic-ai.html" class="cta-button secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="modal" id="diagnostic-imaging">
+            <div class="modal-content">
+                <span class="modal-close">×</span>
+                <h3>Diagnostic Imaging</h3>
+                <p>Our computer vision systems achieve <a class="highlight-number">99.2%</a> accuracy in detecting anomalies in medical imaging, aiding clinicians in early diagnosis.</p> <br>
+                <a href="Services/diagnostic-imaging.html" class="cta-button secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="modal" id="computational-biology">
+            <div class="modal-content">
+                <span class="modal-close">×</span>
+                <h3>Computational Biology</h3>
+                <p>We use AI to analyze biological data, providing personalized insights for cancer research and treatment development.</p> <br>
+                <a href="Services/computational-biology.html" class="cta-button secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+    <section id="portfolio">
+        <div class="particle" style="left: 25%; top: 15%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 65%; top: 35%; animation-delay: 4s;"></div>
+        <div class="container">
+            <h2 class="section-title glow-text"><i class="fas fa-briefcase" aria-label="Portfolio Icon"></i> Our Portfolio</h2>
+            <p class="section-subtitle">Discover how VitaIntel's AI-powered solutions have transformed healthcare.</p>
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="cancer">Cancer Detection</button>
+                <button class="filter-btn" data-filter="genomics">Genomics</button>
+                <button class="filter-btn" data-filter="clinical">Clinical Trials</button>
+            </div>
+            <div class="portfolio-grid">
+                <a href="Portofolio/cancer-detection.html" class="portfolio-card" data-category="cancer" style="transition-delay: 0s;">
+                    <h3><i class="fas fa-heartbeat" aria-label="Cancer Detection Icon"></i> AI-Driven Cancer Detection</h3>
+                    <p>Developed a deep learning model to detect early-stage cancer with 98% accuracy.</p>
+                    <div class="portfolio-overlay">
+                        <span class="view-project">View Project <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="Portofolio/genomic-risk.html" class="portfolio-card" data-category="genomics" style="transition-delay: 0.1s;">
+                    <h3><i class="fas fa-dna" aria-label="Genomics Icon"></i> Genomic Risk Prediction</h3>
+                    <p>Created an AI platform to predict disease risks for personalized treatment plans.</p>
+                    <div class="portfolio-overlay">
+                        <span class="view-project">View Project <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="Portofolio/AI History.html" class="portfolio-card" data-category="genomics" style="transition-delay: 0.2s;">
+                    <h3><i class="fas fa-microscope" aria-label="Biology Icon"></i> Ai History In Cancers</h3>
+                    <p>Take A Look About Ai Cancer History</p>
+                    <div class="portfolio-overlay">
+                        <span class="view-project">View Project <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="Portofolio/precision-oncology.html" class="portfolio-card" data-category="cancer" style="transition-delay: 0.3s;">
+                    <h3><i class="fas fa-syringe" aria-label="Oncology Icon"></i> Precision Oncology</h3>
+                    <p>Developed AI-driven tools to personalize cancer therapies, improving outcomes by 30%.</p>
+                    <div class="portfolio-overlay">
+                        <span class="view-project">View Project <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="Portofolio/single-cell-sequencing.html" class="portfolio-card" data-category="genomics" style="transition-delay: 0.4s;">
+                    <h3><i class="fas fa-cell" aria-label="Cell Icon"></i> Single-Cell Sequencing</h3>
+                    <p>Created a platform for single-cell RNA analysis, identifying novel biomarkers.</p>
+                    <div class="portfolio-overlay">
+                        <span class="view-project">View Project <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                <a href="Portofolio/ai-enhanced-clinical-trials.html" class="portfolio-card" data-category="clinical" style="transition-delay: 0.5s;">
+                    <h3><i class="fas fa-vial" aria-label="Clinical Trials Icon"></i> AI-Enhanced Clinical Trials</h3>
+                    <p>Optimized clinical trial design with AI, reducing recruitment time by 25%.</p>
+                    <div class="portfolio-overlay">
+                        <span class="view-project">View Project <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section id="blog">
+        <div class="particle" style="left: 30%; top: 20%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 80%; top: 40%; animation-delay: 5s;"></div>
+        <div class="container">
+            <h2 class="section-title glow-text"><i class="fas fa-blog" aria-label="Blog Icon"></i> Our Blog</h2>
+            <p class="section-subtitle">Stay updated with the latest insights on AI and biomedical innovation.</p>
+            <div class="blog-grid">
+                <div class="blog-card" data-modal="ai-healthcare" style="transition-delay: 0s;">
+                    <h3><i class="fas fa-heart" aria-label="Healthcare Icon"></i> The Future of AI in Healthcare</h3>
+                    <p>Exploring how AI is revolutionizing diagnostics and treatment personalization.</p> <br>
+                    <button class="cta-button secondary read-more">Read More</button>
+                </div>
+                <div class="blog-card" data-modal="genomics-ml" style="transition-delay: 0.1s;">
+                    <h3><i class="fas fa-dna" aria-label="Genomics Icon"></i> Genomics and Machine Learning</h3>
+                    <p>How VitaIntel's ML models are unlocking new possibilities in genomics.</p> <br>
+                    <button class="cta-button secondary read-more">Read More</button>
+                </div>
+                <div class="blog-card" data-modal="comp-bio" style="transition-delay: 0.2s;">
+                    <h3><i class="fas fa-microscope" aria-label="Biology Icon"></i> AI in Computational Biology</h3>
+                    <p>Discover how AI is transforming genetic research and personalized medicine.</p> <br>
+                    <button class="cta-button secondary read-more">Read More</button>
+                </div>
+                <div class="blog-card" data-modal="precision-med" style="transition-delay: 0.3s;">
+                    <h3><i class="fas fa-syringe" aria-label="Medicine Icon"></i> Precision Medicine Trends</h3>
+                    <p>Insights into how AI is shaping the future of personalized healthcare.</p> <br>
+                    <button class="cta-button secondary read-more">Read More</button>
+                </div>
+                <div class="blog-card" data-modal="clinical-trials-blog" style="transition-delay: 0.4s;">
+                    <h3><i class="fas fa-vial" aria-label="Clinical Trials Icon"></i> AI in Clinical Trials</h3>
+                    <p>Learn how AI is streamlining clinical research for faster outcomes.</p> <br>
+                    <button class="cta-button secondary read-more">Read More</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="ai-healthcare">
+            <div class="modal-content">
+                <span class="modal-close">×</span>
+                <h3>The Future of AI in Healthcare</h3>
+                <p>AI is set to transform healthcare by enabling faster diagnostics, personalized treatments, and efficient clinical trials. Learn more about its potential.</p> <br>
+                <a href="Blog/ai-healthcare.html" class="cta-button secondary">Full Article</a>
+            </div>
+        </div>
+        <div class="modal" id="genomics-ml">
+            <div class="modal-content">
+                <span class="modal-close">×</span>
+                <h3>Genomics and Machine Learning</h3>
+                <p>VitaIntel's machine learning models are unlocking new possibilities in genomics, from disease prediction to personalized therapies.</p> <br>
+                <a href="Blog/genomics-ml.html" class="cta-button secondary">Full Article</a>
+            </div>
+        </div>
+        <div class="modal" id="comp-bio">
+            <div class="modal-content">
+                <span class="modal-close">×</span>
+                <h3>AI in Computational Biology</h3>
+                <p>Explore how AI is revolutionizing genetic research and enabling breakthroughs in personalized medicine.</p> <br>
+                <a href="Blog/comp-bio.html" class="cta-button secondary">Full Article</a>
+            </div>
+        </div>
+        <div class="modal" id="precision-med">
+            <div class="modal-content">
+                <span class="modal-close">×</span>
+                <h3>Precision Medicine Trends</h3>
+                <p>Discover the latest trends in precision medicine and how AI is driving personalized healthcare solutions.</p> <br>
+                <a href="Blog/precision-med.html" class="cta-button secondary">Full Article</a>
+            </div>
+        </div>
+        <div class="modal" id="clinical-trials-blog">
+            <div class="modal-content">
+                <span class="modal-close">×</span>
+                <h3>AI in Clinical Trials</h3>
+                <p>Learn how AI is streamlining clinical research, reducing costs, and accelerating drug development.</p> <br>
+                <a href="Blog/clinical-trials-blog.html" class="cta-button secondary">Full Article</a>
+            </div>
+        </div>
+    </section>
+    <section id="about">
+        <div class="particle" style="left: 35%; top: 25%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 85%; top: 45%; animation-delay: 4s;"></div>
+        <div class="container">
+            <h2 class="section-title glow-text"><i class="fas fa-info-circle" aria-label="About Icon"></i> About VitaIntel</h2>
+            <p class="section-subtitle">Learn about our mission to transform healthcare with AI.</p>
+            <div class="about-container">
+                <div class="about-image">
+                    <img src="c:\Users\asus\OneDrive\Desktop\WhatsApp Image 2025-06-30 at 14.59.50_40a8a665.jpg" alt="VitaIntel Team" loading="lazy">
+                </div>
+                <div class="about-text">
+                    <p>VitaIntel is a biomedical AI startup dedicated to transforming cancer care through advanced machine learning technologies. We specialize in analyzing multi-omics data — including genomics, proteomics, and clinical records — to develop predictive models for early cancer detection and personalized treatment.</p>
+                    <p>Our vision is to bridge the gap between data science and real-world healthcare by building intelligent tools that assist clinicians in making faster, more accurate, and patient-specific decisions.</p>
+                    <p>Founded by a team of passionate engineers and biomedical experts, we aim to redefine how cancer is understood, diagnosed, and treated — one algorithm at a time.</p>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>2024</h4>
+                    <p>VitaIntel founded with a mission to revolutionize cancer care.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2025</h4>
+                    <p>Launched first AI-driven cancer breast detection model.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    </section>
+    <section id="team">
+        <div class="particle" style="left: 40%; top: 20%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 90%; top: 40%; animation-delay: 5s;"></div>
+        <div class="container">
+            <h2 class="section-title glow-text"><i class="fas fa-users" aria-label="Team Icon"></i> Our Team</h2>
+            <p class="section-subtitle">Meet the passionate experts driving VitaIntel's mission.</p>
+            <div class="team-grid">
+                <div class="team-card" style="transition-delay: 0s;">
+                    <img src="c:\Users\asus\OneDrive\Desktop\ceo.jpg" alt="Abdallah Saber" loading="lazy">
+                    <h3><i class="fas fa-brain" aria-label="AI Research Icon"></i> ENG. Abdallah Saber </h3>
+                    <strong> AI/ML Researcher in Biomedical Science </strong>
+                    <p>Founder of VitaIntel, leading our AI research efforts in genomic analysis and predictive modeling.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/abdallah-saber-coma1" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="team-card" style="transition-delay: 0.1s;">
+                    <img src="c:\Users\asus\OneDrive\Desktop\coo.jpg" alt="Mohamed Tamer" loading="lazy">
+                    <h3><i class="fas fa-user-tie" aria-label="Executive Icon"></i>ENG. Mohamed Tamer</h3>
+                    <strong> Web and Application Development Officer </strong>
+                    <p> Partner at VitaIntel, overseeing the development of scalable AI platforms and applications for healthcare</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/mohamed-tamer-72b4b32a7/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="contact">
+        <div class="particle" style="left: 45%; top: 15%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 95%; top: 35%; animation-delay: 4s;"></div>
+        <div class="container">
+            <h2 class="section-title glow-text"><i class="fas fa-envelope" aria-label="Contact Icon"></i> Connect With VitaIntel</h2>
+            <p class="section-subtitle">Reach out to explore how our AI-powered solutions can transform healthcare.</p>
+            <div class="contact-container">
+                <div class="contact-info glow-box">
+                    <h3>Our <span class="specialization">Contact Details</span></h3>
+                    <p><i class="fas fa-map-marker-alt" aria-label="Location Icon"></i> 6th of October, Giza, Egypt</p>
+                    <p><i class="fas fa-phone" aria-label="Phone Icon"></i> <a href="tel:+201124651928">+20 11 2465 1928</a></p>
+                    <p><i class="fas fa-envelope" aria-label="Email Icon"></i> <a href="mailto:info@vitaintel.com">info@vitaintel.com</a></p>
+                    <div class="social-links">
+                        <a href="https://twitter.com/vitaintel" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="linkedin.com/company/vitaintel" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.facrbook.com/vitaintel" target="_blank" aria-label="facebook"><i class="fab fa-Facebook"></i></a>
+                    </div>
+                    <br>
+                    <a href="mailto:info@vitaintel.com" class="cta-button secondary">Send Email</a>
+                </div>
+                <form action="/submit_contact" method="POST" class="contact-form glow-box" id="contactForm">
+                    <h3>Send Us a Message</h3>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <div class="form-error" id="nameError">Please enter a valid name.</div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="form-error" id="emailError">Please enter a valid email.</div>
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" required></textarea>
+                    <div class="form-error" id="messageError">Please enter a message.</div>
+                    <button type="submit">Send Message</button>
+                    <div id="responseMessage" style="display: none; color: var(--secondary); margin-top: 10px;"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h4>About VitaIntel</h4>
+                    <p>VitaIntel is a biomedical AI startup dedicated to transforming cancer care through advanced machine learning technologies.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home" class="scroll-link">Home</a></li>
+                        <li><a href="#services" class="scroll-link">Services</a></li>
+                        <li><a href="#portfolio" class="scroll-link">Portfolio</a></li>
+                        <li><a href="#blog" class="scroll-link">Blog</a></li>
+                        <li><a href="#about" class="scroll-link">About</a></li>
+                        <li><a href="#testimonials" class="scroll-link">Testimonials</a></li>
+                        <li><a href="#team" class="scroll-link">Team</a></li>
+                        <li><a href="#contact" class="scroll-link">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://twitter.com/vitaintel" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://linkedin.com/company/vitaintel" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://facebook.com/vitaintel" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <p>© 2025 VitaIntel. All rights reserved.</p>
+        </div>
+    </footer>
+    <a href="#home" class="back-to-top scroll-link" id="backToTop"><i class="fas fa-arrow-up" aria-label="Back to Top"></i></a>
+    <script>
+        // Function to scroll to a section
+        function scrollToSection(targetId) {
+            const target = targetId ? document.getElementById(targetId) : null;
+            const offset = target ? target.offsetTop - 80 : 0;
+            window.scrollTo({
+                top: offset,
+                behavior: 'smooth'
+            });
+        }
+
+        // Page progress bar and header scroll effect
+        window.addEventListener('scroll', () => {
+            const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollProgress = (window.scrollY / scrollTotal) * 100;
+            document.querySelector('.progress-bar').style.width = `${scrollProgress}%`;
+            
+            // Header transparency toggle
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Update navigation highlighting
+        function updateNavHighlight(targetId) {
+            const navLinks = document.querySelectorAll('nav ul li a.scroll-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === (targetId ? `#${targetId}` : '#home')) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('.scroll-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+                history.pushState({ section: targetId }, null, `#${targetId}`);
+                updateNavHighlight(targetId);
+                if (window.innerWidth <= 768) {
+                    document.getElementById('navMenu').classList.remove('active');
+                    document.getElementById('hamburger').innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        hamburger?.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.innerHTML = navMenu.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Back to Top button
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Typed.js effect for hero subtitle
+                const typedSubtitle = document.getElementById('typedSubtitle');
+                if (typedSubtitle) {
+                    const phrases = [
+                        'Pioneering precision healthcare with AI.',
+                        'Transforming cancer care through genomics.',
+                        'Empowering clinicians with intelligent tools.'
+                    ];
+                    let currentPhrase = 0;
+                    let charIndex = 0;
+                    let isDeleting = false;
+                    function type() {
+                        const currentText = phrases[currentPhrase];
+                        if (!isDeleting) {
+                            typedSubtitle.textContent = currentText.substring(0, charIndex++);
+                            if (charIndex <= currentText.length) {
+                                setTimeout(type, 100);
+                            } else {
+                                isDeleting = true;
+                                setTimeout(type, 2000);
+                            }
+                        } else {
+                            typedSubtitle.textContent = currentText.substring(0, charIndex--);
+                            if (charIndex >= 0) {
+                                setTimeout(type, 50);
+                            } else {
+                                isDeleting = false;
+                                currentPhrase = (currentPhrase + 1) % phrases.length;
+                                setTimeout(type, 500);
+                            }
+                        }
+                    }
+                    type();
+                }
+
+                // DNA strand animation
+                const dnaContainer = document.getElementById('dna');
+                if (dnaContainer) {
+                    const nodes = 20;
+                    const radius = 30;
+                    for (let i = 0; i < nodes; i++) {
+                        const angle = (i / nodes) * Math.PI * 2;
+                        const x = radius * Math.cos(angle);
+                        const y = i * 25;
+                        const node1 = document.createElement('div');
+                        node1.className = 'dna-node';
+                        node1.style.left = `calc(50% + ${x}px)`;
+                        node1.style.top = `${y}px`;
+                        node1.style.animationDelay = `${i * 0.1}s`;
+                        const node2 = document.createElement('div');
+                        node2.className = 'dna-node';
+                        node2.style.left = `calc(50% - ${x}px)`;
+                        node2.style.top = `${y}px`;
+                        node2.style.animationDelay = `${i * 0.1 + 0.5}s`;
+                        dnaContainer.appendChild(node1);
+                        dnaContainer.appendChild(node2);
+                    }
+                }
+
+                // Scroll animations
+                const elements = document.querySelectorAll('h1, h2, p, .cta-button, .service-card, .portfolio-card, .blog-card, .team-card, .testimonial-card, .about-container, .about-text, .about-image, .contact-info, .contact-form, .timeline-item');
+                const animationObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry, index) => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.transitionDelay = `${index * 0.1}s`;
+                            entry.target.classList.add('animate-in');
+                            animationObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                elements.forEach(el => animationObserver.observe(el));
+
+                // Navigation highlighting
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('nav ul li a.scroll-link');
+
+                const navObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const sectionId = entry.target.id;
+                            updateNavHighlight(sectionId);
+                        }
+                    });
+                }, { threshold: 0.5, rootMargin: '-80px 0px -200px 0px' });
+
+                sections.forEach(section => navObserver.observe(section));
+
+                // Handle initial hash on page load
+                const initialHash = window.location.hash;
+                const targetId = initialHash ? initialHash.substring(1) : null;
+                scrollToSection(targetId);
+                updateNavHighlight(targetId);
+
+                // Handle back navigation
+                window.addEventListener('popstate', (event) => {
+                    const state = event.state || {};
+                    const sectionId = state.section || (window.location.hash ? window.location.hash.substring(1) : null);
+                    scrollToSection(sectionId);
+                    updateNavHighlight(sectionId || 'home');
+                });
+
+                // Portfolio filter
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const portfolioCards = document.querySelectorAll('.portfolio-card');
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const filter = button.getAttribute('data-filter');
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        portfolioCards.forEach(card => {
+                            const category = card.getAttribute('data-category');
+                            if (filter === 'all' || category === filter) {
+                                card.style.display = 'block';
+                                card.classList.remove('animate-in');
+                                setTimeout(() => card.classList.add('animate-in'), 100);
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+
+                // Modal handling
+                const modalTriggers = document.querySelectorAll('[data-modal]');
+                const modals = document.querySelectorAll('.modal');
+                const modalCloses = document.querySelectorAll('.modal-close');
+                modalTriggers.forEach(trigger => {
+                    trigger.addEventListener('click', () => {
+                        const modalId = trigger.getAttribute('data-modal');
+                        document.getElementById(modalId).style.display = 'flex';
+                    });
+                });
+                modalCloses.forEach(close => {
+                    close.addEventListener('click', () => {
+                        modals.forEach(modal => modal.style.display = 'none');
+                    });
+                });
+                modals.forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) modal.style.display = 'none';
+                    });
+                });
+
+                // Testimonials carousel
+                const testimonialsGrid = document.querySelector('.testimonials-grid');
+                const prevBtn = document.querySelector('.carousel-btn.prev');
+                const nextBtn = document.querySelector('.carousel-btn.next');
+                let currentIndex = 0;
+                const totalTestimonials = document.querySelectorAll('.testimonial-card').length;
+                function updateCarousel() {
+                    testimonialsGrid.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+                prevBtn?.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + totalTestimonials) % totalTestimonials;
+                    updateCarousel();
+                });
+                nextBtn?.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % totalTestimonials;
+                    updateCarousel();
+                });
+
+                // Contact form validation
+                const contactForm = document.getElementById('contactForm');
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const messageInput = document.getElementById('message');
+                const nameError = document.getElementById('nameError');
+                const emailError = document.getElementById('emailError');
+                const messageError = document.getElementById('messageError');
+
+                function validateInput(input, errorEl, validationFn, errorMsg) {
+                    if (!validationFn(input.value)) {
+                        errorEl.style.display = 'block';
+                        errorEl.textContent = errorMsg;
+                        return false;
+                    } else {
+                        errorEl.style.display = 'none';
+                        return true;
+                    }
+                }
+
+                nameInput?.addEventListener('input', () => {
+                    validateInput(nameInput, nameError, value => value.trim().length >= 2, 'Please enter a valid name.');
+                });
+                emailInput?.addEventListener('input', () => {
+                    validateInput(emailInput, emailError, value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), 'Please enter a valid email.');
+                });
+                messageInput?.addEventListener('input', () => {
+                    validateInput(messageInput, messageError, value => value.trim().length >= 10, 'Please enter a message (min 10 characters).');
+                });
+
+                contactForm?.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const isNameValid = validateInput(nameInput, nameError, value => value.trim().length >= 2, 'Please enter a valid name.');
+                    const isEmailValid = validateInput(emailInput, emailError, value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), 'Please enter a valid email.');
+                    const isMessageValid = validateInput(messageInput, messageError, value => value.trim().length >= 10, 'Please enter a message (min 10 characters).');
+                    if (!isNameValid || !isEmailValid || !isMessageValid) return;
+                    const formData = new FormData(contactForm);
+                    const responseMessage = document.getElementById('responseMessage');
+                    try {
+                        const response = await fetch('/submit_contact', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const data = await response.json();
+                        responseMessage.style.display = 'block';
+                        responseMessage.textContent = data.message || data.error;
+                        if (response.ok) {
+                            contactForm.reset();
+                        }
+                    } catch (error) {
+                        responseMessage.style.display = 'block';
+                        responseMessage.textContent = 'Error sending message. Try again later.';
+                    }
+                });
+            } catch (error) {
+                console.error('Initialization error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
