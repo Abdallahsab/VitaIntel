@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Oncology | VitaIntel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #7c3aed;
+            --dark: #1e293b;
+            --light: #ffffff;
+            --text-dark: #0f172a;
+            --text-light: #333333;
+            --border: #e2e8f0;
+            --accent-green: #4c79af;
+            --font-main: 'Poppins', sans-serif;
+        }
+            * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font-main);
+            color: var(--text-color);
+            background-color: var(--bg-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .glow-text {
+            text-shadow: 0 0 8px rgba(112, 200, 255, 0.3);
+        }
+        .glow-box {
+            box-shadow: var(--glow-shadow);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: transparent;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        header.scrolled {
+            background: var(--bg-section);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #2a86c8 ;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+            color: var(--primary-dark);
+        }
+        .logo img {
+            margin-right: 5px;
+            width: 60px;
+            height: 60px;
+        }
+        .logo svg {
+            width: 90px;
+            height: 90px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        nav ul li a:hover::after, nav ul li a.active::after {
+            width: 100%;
+        }
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+     
+        .portfolio-detail-section {
+            padding: 150px 0 80px;
+            background: var(--light);
+            min-height: 100vh;
+        }
+        .portfolio-detail-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .portfolio-detail-container h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .intro-box {
+            background: rgba(235, 238, 245, 0.7);
+            border: 1px solid var(--primary);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .intro-box:hover {
+            transform: translateY(-5px);
+        }
+        .content-box {
+            background: rgba(235, 238, 245, 0.7);
+            border: 1px solid var(--primary);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fade-in 0.6s forwards;
+        }
+        @keyframes fade-in {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .content-box:nth-child(1) { animation-delay: 0.2s; }
+        .content-box:nth-child(2) { animation-delay: 0.4s; }
+        .content-box:nth-child(3) { animation-delay: 0.6s; }
+        .content-box:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .portfolio-detail-container h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+        .portfolio-detail-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.4s ease;
+        }
+        .content-box:hover h2::after {
+            width: 100%;
+        }
+        .portfolio-detail-container p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        .highlight-number {
+            color: var(--accent-green);
+            font-weight: 600;
+            position: relative;
+            text-decoration: none;
+        }
+        .highlight-number::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            font-size: 0.7rem;
+            color: var(--primary);
+        }
+        .research-ref {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin: 40px 0 30px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
+            opacity: 0;
+            animation: fade-in 0.6s forwards 0.8s;
+        }
+        .research-ref a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+            position: relative;
+        }
+        .research-ref a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        .research-ref a:hover::after {
+            width: 100%;
+        }
+        .cta-button {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--light);
+            padding: 16px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+            opacity: 0;
+            animation: fade-in 0.6s forwards 1s;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 15px 45px;
+        }
+        .cta-button.secondary:hover {
+            background: var(--primary);
+            color: var(--light);
+        }
+        footer {
+            background: var(--light);
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        .social-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .social-links a {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-links a:hover {
+            color: var(--primary);
+            transform: scale(1.2);
+        }
+        @media (max-width: 768px) {
+            .portfolio-detail-section {
+                padding: 120px 0 60px;
+            }
+            .portfolio-detail-container h1 {
+                font-size: 2.5rem;
+            }
+            .portfolio-detail-container h2 {
+                font-size: 1.8rem;
+            }
+            .intro-box, .content-box {
+                padding: 25px;
+            }
+        }
+        @media (max-width: 480px) {
+            .portfolio-detail-container h1 {
+                font-size: 2rem;
+            }
+            .portfolio-detail-container h2 {
+                font-size: 1.5rem;
+            }
+            .portfolio-detail-container p {
+                font-size: 1rem;
+            }
+            .intro-box, .content-box {
+                padding: 20px;
+            }
+            .cta-button {
+                padding: 14px 35px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+               <div class="logo">
+                    <img src="VitaIntel_logo.svg" alt="VitaIntel Logo" width="70" height="auto">
+                    VitaIntel
+                </div>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#portfolio">Portfolio</a></li>
+                    <li><a href="index.html#blog">Blog</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#careers">Careers</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class="portfolio-detail-section">
+        <div class="container">
+            <div class="portfolio-detail-container">
+                <h1>Precision Oncology</h1>
+                
+                <div class="intro-box">
+                    <p>Our Precision Oncology platform represents the next generation of cancer treatment, combining artificial intelligence with genomic medicine to deliver truly personalized therapeutic strategies. This revolutionary approach is transforming outcomes for patients with previously difficult-to-treat malignancies.</p>
+                </div>
+                
+                <div class="content-box">
+                    <h2>Targeted Therapy Design</h2>
+                    <p>Using advanced AI-ML models trained on comprehensive tumor genomic profiles, we identify optimal treatment combinations for individual patients. Our system achieves a <a class="highlight-number">30%</a> improvement in treatment efficacy compared to standard protocols, as validated in multi-center clinical trials.</p>
+                </div>
+                
+                <div class="content-box">
+                    <h2>Real-World Impact</h2>
+                    <p>Currently implemented in <a class="highlight-number">20</a> leading oncology clinics worldwide, our tools have supported over <a class="highlight-number">5,000</a> patients. Real-world data demonstrates a <a href="https://acsjournals.onlinelibrary.wiley.com/doi/full/10.3322/caac.21660" target="_blank" class="highlight-number">22%</a> reduction in treatment-related side effects through optimized drug selection and dosing algorithms.</p>
+                </div>
+                
+                <div class="content-box">
+                    <h2>Future Expansion</h2>
+                    <p>We are pioneering the integration of multi-omics data (genomic, proteomic, and metabolomic) to enhance our predictive models. Our roadmap includes expanding to address rare pediatric cancers and developing mobile solutions to bring precision oncology to underserved regions globally.</p>
+                </div>
+                
+                <div class="research-ref">
+                     Clinical references: 
+                    <a href="https://www.nature.com/articles/s41591-021-01294-w" target="_blank">Nature Medicine</a> | 
+                    <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8285856/" target="_blank">NCBI Clinical Study</a> | 
+                    <a href="https://www.who.int/news-room/fact-sheets/detail/cancer" target="_blank">WHO Cancer Facts</a> | 
+                    <a href="https://acsjournals.onlinelibrary.wiley.com/doi/full/10.3322/caac.21660" target="_blank">CA: A Cancer Journal</a>
+                </div>
+                
+                <a href="file:///D:/Programming/VitaIntel_site/Front_End/index.html#portfolio" class="cta-button secondary">Back to Portfolio</a>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>© <span class="highlight-number">2025</span> VitaIntel. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://twitter.com/vitaintel" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com/company/vitaintel" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://facebook.com/vitaintel" target="_blank"><i class="fab fa-facebook"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

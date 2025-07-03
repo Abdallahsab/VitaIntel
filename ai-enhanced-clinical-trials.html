@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Enhanced Clinical Trials | VitaIntel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --dark: #0f172a;
+            --light: #ffffff;
+            --text-dark: #0f172a;
+            --text-light: #333333;
+            --blue-accent: #3b82f6;
+            --purple-accent: #8b5cf6;
+            --font-main: 'Poppins', sans-serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font-main);
+            color: var(--text-color);
+            background-color: var(--bg-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .glow-text {
+            text-shadow: 0 0 8px rgba(112, 200, 255, 0.3);
+        }
+        .glow-box {
+            box-shadow: var(--glow-shadow);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: transparent;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        header.scrolled {
+            background: var(--bg-section);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #2a86c8 ;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+            color: var(--primary-dark);
+        }
+        .logo img {
+            margin-right: 5px;
+            width: 60px;
+            height: 60px;
+        }
+        .logo svg {
+            width: 90px;
+            height: 90px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        nav ul li a:hover::after, nav ul li a.active::after {
+            width: 100%;
+        }
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        .portfolio-detail-section {
+            padding: 120px 0;
+            background: var(--light);
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+        .portfolio-detail-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .portfolio-detail-container h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--blue-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .portfolio-detail-container h2 {
+            font-size: 2rem;
+            margin: 30px 0 15px 0;
+            color: var(--primary);
+        }
+        .content-box {
+            background: rgba(241, 245, 249, 0.8);
+            border: 1px solid var(--blue-accent);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .portfolio-detail-container p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+            color: var(--dark);
+        }
+        .highlight-number {
+            color: var(--blue-accent);
+            font-weight: 600;
+        }
+        .cta-button {
+            background: linear-gradient(90deg, var(--blue-accent), var(--purple-accent));
+            color: var(--light);
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--blue-accent);
+            color: var(--blue-accent);
+            padding: 14px 40px;
+        }
+        .cta-button.secondary:hover {
+            background: var(--blue-accent);
+            color: var(--light);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+        footer {
+            background: var(--light);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+         .social-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .social-links a {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-links a:hover {
+            color: var(--primary);
+            transform: scale(1.2);
+        }
+        @media (max-width: 768px) {
+            .portfolio-detail-section {
+                padding: 80px 0;
+            }
+            .portfolio-detail-container h1 {
+                font-size: 2.5rem;
+            }
+            .portfolio-detail-container h2 {
+                font-size: 1.8rem;
+            }
+            .portfolio-detail-container p {
+                font-size: 1.1rem;
+            }
+            .content-box {
+                padding: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .portfolio-detail-container h1 {
+                font-size: 2rem;
+            }
+            .portfolio-detail-container h2 {
+                font-size: 1.5rem;
+            }
+            .portfolio-detail-container p {
+                font-size: 1rem;
+            }
+            .cta-button {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            .content-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="VitaIntel_logo.svg" alt="VitaIntel Logo" width="70" height="auto">
+                    VitaIntel
+                </div>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#portfolio">Portfolio</a></li>
+                    <li><a href="index.html#blog">Blog</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#careers">Careers</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class="portfolio-detail-section">
+        <div class="container">
+            <div class="portfolio-detail-container">
+                <h1 class="glow-text">AI-Enhanced Clinical Trials</h1>
+                <p>VitaIntel's AI-Enhanced Clinical Trials platform transforms the way clinical research is conducted, making trials faster, more inclusive, and more effective. Our AI-ML and DataEng expertise drives innovation in trial design and execution.</p>
+                
+                <h2>Streamlined Patient Recruitment</h2>
+                <div class="content-box">
+                    <p>Our AI algorithms analyze health records and genomic data to match patients with trials, reducing recruitment time by <span class="highlight-number">25%</span>. This has enabled trials with <span class="highlight-number">30%</span> more diverse cohorts, improving generalizability of results.</p>
+                </div>
+                
+                <h2>Optimized Trial Protocols</h2>
+                <div class="content-box">
+                    <p>Using predictive models, we refine trial designs to enhance efficacy and safety. Our DataEng pipelines process real-time data, supporting adaptive trials that have boosted success rates by <span class="highlight-number">20%</span> in oncology research.</p>
+                </div>
+                
+                <h2>Global Impact</h2>
+                <div class="content-box">
+                    <p>Deployed in over <span class="highlight-number">50</span> trials worldwide, our platform has accelerated therapy development for diseases like cancer. We're now integrating wearable tech to monitor patient outcomes, aiming to further reduce trial durations by <span class="highlight-number">15%</span>.</p>
+                </div>
+                
+                <a href="file:///D:/Programming/VitaIntel_site/Front_End/index.html#portfolio" class="cta-button secondary">Back to Portfolio</a>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>© <span class="highlight-number">2025</span> VitaIntel. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://twitter.com/vitaintel" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com/company/vitaintel" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://instagram.com/vitaintel" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
