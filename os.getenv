@@ -1,0 +1,4 @@
+EMAIL_USER = vitaaintel@gmail.com
+EMAIL_PASS = ucza xuqz cpzm jdch
+SMTP_SERVER = 'smtp.gmail.com'
+SMTP_PORT = 587
